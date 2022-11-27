@@ -6,6 +6,10 @@ BEDU: Developer Engineering
 
 ## MÓDULO 1: DESARROLLO DE SOFTWARE ÁGIL 💻🚀🤖
 
+- Tableros proyectos
+    - [Sistema Pizzeria](https://github.com/users/carlosjz18/projects/6/views/1)
+    - [Sistema de Control Ingresos y Gastos](https://github.com/users/carlosjz18/projects/1/views/1)
+
 - Sesión 01: Agilidad
     - [Documentación - Apartado 1](https://docs.google.com/document/d/1lzzcZnAV9atwijTlIO3ie0c_Ckz_YQahrUtHa_KBwFk/edit?usp=share_lin)
 
