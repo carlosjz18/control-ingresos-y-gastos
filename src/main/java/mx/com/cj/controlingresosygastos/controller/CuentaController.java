@@ -1,7 +1,7 @@
 package mx.com.cj.controlingresosygastos.controller;
 
-import mx.com.cj.controlingresosygastos.model.Cuenta;
-import mx.com.cj.controlingresosygastos.model.Usuario;
+import mx.com.cj.controlingresosygastos.entity.Cuenta;
+import mx.com.cj.controlingresosygastos.entity.Usuario;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
