@@ -1,7 +1,16 @@
 package mx.com.cj.controlingresosygastos.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "cuentas")
 public class Cuenta {
@@ -26,64 +35,4 @@ public class Cuenta {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_usuarios_cuentas"))
     private Usuario usuario;
-
-    public Cuenta() {
-    }
-
-    public Cuenta(Long cuentaId, String institucionFinanciera, String tipoCuenta, Double saldoInicial, Double saldoActual, Usuario usuario) {
-        this.cuentaId = cuentaId;
-        this.institucionFinanciera = institucionFinanciera;
-        this.tipoCuenta = tipoCuenta;
-        this.saldoInicial = saldoInicial;
-        this.saldoActual = saldoActual;
-        this.usuario = usuario;
-    }
-
-    public Long getCuentaId() {
-        return cuentaId;
-    }
-
-    public void setCuentaId(Long cuentaId) {
-        this.cuentaId = cuentaId;
-    }
-
-    public String getInstitucionFinanciera() {
-        return institucionFinanciera;
-    }
-
-    public void setInstitucionFinanciera(String institucionFinanciera) {
-        this.institucionFinanciera = institucionFinanciera;
-    }
-
-    public String getTipoCuenta() {
-        return tipoCuenta;
-    }
-
-    public void setTipoCuenta(String tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
-    }
-
-    public Double getSaldoInicial() {
-        return saldoInicial;
-    }
-
-    public void setSaldoInicial(Double saldoInicial) {
-        this.saldoInicial = saldoInicial;
-    }
-
-    public Double getSaldoActual() {
-        return saldoActual;
-    }
-
-    public void setSaldoActual(Double saldoActual) {
-        this.saldoActual = saldoActual;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 }

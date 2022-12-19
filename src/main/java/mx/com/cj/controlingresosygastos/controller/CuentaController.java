@@ -1,70 +1,83 @@
 package mx.com.cj.controlingresosygastos.controller;
 
-import mx.com.cj.controlingresosygastos.entity.Cuenta;
-import mx.com.cj.controlingresosygastos.entity.Usuario;
+import lombok.extern.slf4j.Slf4j;
+import mx.com.cj.controlingresosygastos.dto.CuentaDTO;
+import mx.com.cj.controlingresosygastos.response.ResponseHandler;
+import mx.com.cj.controlingresosygastos.service.ICuentaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @RestController
-@RequestMapping("/api/cuenta")
+@RequestMapping("/api/cuentas")
 public class CuentaController {
 
-    private List<Cuenta> cuentas;
-    private Usuario usuario = new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123");
+    private ICuentaService cuentaService;
 
-    public CuentaController() {
-        cuentas = new ArrayList<>();
-        cuentas.add(new Cuenta(1L, "Cuenta Corriente", "HSBC", 100.00, 100.00, usuario));
-        cuentas.add(new Cuenta(2L, "Ahorros", "BBVA", 1000.00, 1000.00, usuario));
-        cuentas.add(new Cuenta(3L, "Dinero", "Otros", 1800.00, 1800.00, usuario));
+    public CuentaController(ICuentaService cuentaService) {
+        this.cuentaService = cuentaService;
     }
 
-    @GetMapping({"", "/"})
-    public List<Cuenta> obtenerCuentas() {
-        return cuentas;
+    @GetMapping
+    public ResponseEntity<Object> obtenerCuentas() {
+        try {
+            List<CuentaDTO> cuentas = cuentaService.findAll();
+            log.info("Cuentas encontradas correctamente.");
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, cuentas);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @GetMapping("/{idCuenta}")
-    public Cuenta obtenerCuenta(@PathVariable("idCuenta") Long idCuenta) {
-        return cuentas.stream().filter(cuenta -> cuenta.getCuentaId().equals(idCuenta)).findFirst().orElse(null);
+    public ResponseEntity<Object> obtenerCuenta(@PathVariable("idCuenta") Long idCuenta) {
+        Optional<CuentaDTO> cuentaDTO = cuentaService.findById(idCuenta);
+        if (cuentaDTO.isEmpty()) {
+            log.info("Cuenta no encontrada con id: {}", idCuenta);
+            return ResponseHandler.generateResponse("Cuenta no encontrada con id: " + idCuenta, HttpStatus.NOT_FOUND, null);
+        }
+
+        log.info("Cuenta encontrada corectamente, id {}", idCuenta);
+        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, cuentaDTO.get());
     }
 
-    @PostMapping({"", "/"})
-    public Cuenta agregarCuenta(@RequestBody Cuenta cuenta) {
-        Long ultimoId = cuentas.get(cuentas.size() - 1).getCuentaId();
-        cuenta.setCuentaId(++ultimoId);
-        // TODO: obtener usuarioId del request y obtenerlo para agregarlo
-        cuenta.setUsuario(usuario);
-        cuentas.add(cuenta);
-        return cuenta;
+    @PostMapping
+    public ResponseEntity<Object> agregarCuenta(@RequestBody CuentaDTO cuentaDTO) {
+        try {
+            CuentaDTO cuenta = cuentaService.save(cuentaDTO);
+            log.info("Cuenta agregada correctamente.");
+            return ResponseHandler.generateResponse("Cuenta agregada correctamente.", HttpStatus.OK, cuenta);
+        } catch (Exception e) {
+            log.warn("Ocurrio un error: ", e);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @PutMapping("/{idCuenta}")
-    public Cuenta actualizarCuenta(@RequestBody Cuenta cuentaRequest, @PathVariable("idCuenta") Long idCuenta) {
-        Cuenta cuenta = obtenerCuenta(idCuenta);
-
-        if (cuenta != null) {
-            cuenta.setInstitucionFinanciera(cuentaRequest.getInstitucionFinanciera());
-            cuenta.setTipoCuenta(cuentaRequest.getTipoCuenta());
-            cuenta.setSaldoInicial(cuentaRequest.getSaldoInicial());
-            cuenta.setSaldoActual(cuentaRequest.getSaldoActual());
-            // TODO: obtener usuarioId del request y obtenerlo para agregarlo
-            cuenta.setUsuario(usuario);
+    public ResponseEntity<Object> actualizarCuenta(@RequestBody CuentaDTO cuentaRequest, @PathVariable("idCuenta") Long idCuenta) {
+        try {
+            cuentaService.update(idCuenta, cuentaRequest);
+            log.info("Cuenta actualizada correctamente.");
+            return ResponseHandler.generateResponse("Cuenta actualizada correctamente.", HttpStatus.OK, null);
+        } catch (Exception e) {
+            log.warn("Ocurrio un error: ", e);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
-
-        return cuenta;
     }
 
     @DeleteMapping("/{idCuenta}")
-    public Cuenta eliminarCuenta(@PathVariable("idCuenta") Long idCuenta) {
-        Cuenta cuenta = obtenerCuenta(idCuenta);
-
-        if (cuenta != null) {
-            cuentas.remove(cuenta);
+    public ResponseEntity<Object> eliminarCuenta(@PathVariable("idCuenta") Long idCuenta) {
+        try {
+            cuentaService.delete(idCuenta);
+            log.info("Cuenta eliminada correctamente, id {}", idCuenta);
+            return ResponseHandler.generateResponse("Cuenta eliminada correctamente.", HttpStatus.OK, null);
+        } catch (Exception e) {
+            log.warn("Ocurrio un error: ", e);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
-
-        return cuenta;
     }
 }

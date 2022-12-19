@@ -1,74 +1,73 @@
 package mx.com.cj.controlingresosygastos.controller;
 
-import mx.com.cj.controlingresosygastos.entity.Cuenta;
-import mx.com.cj.controlingresosygastos.entity.Gasto;
-import mx.com.cj.controlingresosygastos.entity.Usuario;
+import mx.com.cj.controlingresosygastos.dto.GastoDTO;
+import mx.com.cj.controlingresosygastos.response.ResponseHandler;
+import mx.com.cj.controlingresosygastos.service.IGastoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/gasto")
+@RequestMapping("/api/gastos")
 public class GastoController {
 
-    private List<Gasto> gastos;
-    private Usuario usuario = new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123");
-    private Cuenta cuenta = new Cuenta(1L, "Cuenta Corriente", "HSBC", 100.00, 100.00, usuario);
+    private IGastoService gastoService;
 
-    public GastoController() {
-        gastos = new ArrayList<>();
-        gastos.add(new Gasto(1L, "Compra de despensa / Walmart", 899.45, LocalDate.now(), "Supermercado", cuenta));
-        gastos.add(new Gasto(2L, "Pago Luz", 344.56, LocalDate.now(), "Facturas", cuenta));
-        gastos.add(new Gasto(3L, "Netflix", 125.00, LocalDate.now(), "Facturas", cuenta));
+    public GastoController(IGastoService gastoService) {
+        this.gastoService = gastoService;
     }
 
-    @GetMapping({"", "/"})
-    public List<Gasto> obtenerGastos() {
-        return gastos;
+    @GetMapping
+    public ResponseEntity<Object> obtenerGastos() {
+        try {
+            List<GastoDTO> gastos = gastoService.findAll();
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, gastos);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @GetMapping("/{idGasto}")
-    public Gasto obtenerGasto(@PathVariable("idGasto") Long idGasto) {
-        return gastos.stream().filter(gasto -> gasto.getGastoId().equals(idGasto)).findFirst().orElse(null);
+    public ResponseEntity<Object> obtenerGasto(@PathVariable("idGasto") Long idGasto) {
+        Optional<GastoDTO> gastoDTO = gastoService.findById(idGasto);
+        if (gastoDTO.isEmpty()) {
+            return ResponseHandler.generateResponse("Gasto no encontrada con id: " + idGasto, HttpStatus.NOT_FOUND, null);
+        }
+
+        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, gastoDTO.get());
     }
 
-    @PostMapping({"", "/"})
-    public Gasto agregarGasto(@RequestBody Gasto gasto) {
-        Long ultimoId = gastos.get(gastos.size() - 1).getGastoId();
-        gasto.setGastoId(++ultimoId);
-        // TODO: obtener cuentaId del request y obtenerlo para agregarlo
-        gasto.setCuenta(cuenta);
-        gastos.add(gasto);
-        return gasto;
+    @PostMapping
+    public ResponseEntity<Object> agregarGasto(@RequestBody GastoDTO gastoDTO) {
+        try {
+            GastoDTO gasto = gastoService.save(gastoDTO);
+            return ResponseHandler.generateResponse("Gasto agregado correctamente.", HttpStatus.OK, gasto);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @PutMapping("/{idGasto}")
-    public Gasto actualizarGasto(@RequestBody Gasto gastoRequest, @PathVariable("idGasto") Long idGasto) {
-        Gasto gasto = obtenerGasto(idGasto);
-
-        if (gasto != null) {
-            gasto.setDescripcion(gastoRequest.getDescripcion());
-            gasto.setMonto(gastoRequest.getMonto());
-            gasto.setFecha(gastoRequest.getFecha());
-            gasto.setCategoria(gastoRequest.getCategoria());
-            // TODO: obtener cuentaId del request y obtenerlo para agregarlo
-            gasto.setCuenta(cuenta);
+    public ResponseEntity<Object> actualizarGasto(@RequestBody GastoDTO gastoRequest, @PathVariable("idGasto") Long idGasto) {
+        try {
+            gastoService.update(idGasto, gastoRequest);
+            return ResponseHandler.generateResponse("Gasto actualizado correctamente.", HttpStatus.OK, null);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
-
-        return gasto;
     }
 
     @DeleteMapping("/{idGasto}")
-    public Gasto eliminarGasto(@PathVariable("idGasto") Long idGasto) {
-        Gasto gasto = obtenerGasto(idGasto);
-
-        if (gasto != null) {
-            gastos.remove(gasto);
+    public ResponseEntity<Object> eliminarGasto(@PathVariable("idGasto") Long idGasto) {
+        try {
+            gastoService.delete(idGasto);
+            return ResponseHandler.generateResponse("Gasto eliminado correctamente.", HttpStatus.OK, null);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
-
-        return gasto;
     }
 
 }

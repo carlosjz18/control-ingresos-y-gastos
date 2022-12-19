@@ -1,74 +1,73 @@
 package mx.com.cj.controlingresosygastos.controller;
 
-import mx.com.cj.controlingresosygastos.entity.Cuenta;
-import mx.com.cj.controlingresosygastos.entity.Ingreso;
-import mx.com.cj.controlingresosygastos.entity.Usuario;
+import mx.com.cj.controlingresosygastos.dto.IngresoDTO;
+import mx.com.cj.controlingresosygastos.response.ResponseHandler;
+import mx.com.cj.controlingresosygastos.service.IIngresoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/ingreso")
+@RequestMapping("/api/ingresos")
 public class IngresoController {
 
-    private List<Ingreso> ingresos;
-    private Usuario usuario = new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123");
-    private Cuenta cuenta = new Cuenta(1L, "Cuenta Corriente", "HSBC", 100.00, 100.00, usuario);
+    private IIngresoService ingresoService;
 
-    public IngresoController() {
-        ingresos = new ArrayList<>();
-        ingresos.add(new Ingreso(1L, "Pago nómina", 2300.00, LocalDate.now(), "Sueldo", cuenta));
-        ingresos.add(new Ingreso(2L, "Deuda Mario", 500.00, LocalDate.now(), "Otros", cuenta));
-        ingresos.add(new Ingreso(3L, "Venta coche", 150_000.00, LocalDate.now(), "Otros", cuenta));
+    public IngresoController(IIngresoService ingresoService) {
+        this.ingresoService = ingresoService;
     }
 
-    @GetMapping({"", "/"})
-    public List<Ingreso> obtenerIngresos() {
-        return ingresos;
+    @GetMapping
+    public ResponseEntity<Object> obtenerIngresos() {
+        try {
+            List<IngresoDTO> ingresos = ingresoService.findAll();
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, ingresos);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @GetMapping("/{idIngreso}")
-    public Ingreso obtenerIngreso(@PathVariable("idIngreso") Long idIngreso) {
-        return ingresos.stream().filter(ingreso -> ingreso.getIngresoId().equals(idIngreso)).findFirst().orElse(null);
+    public ResponseEntity<Object> obtenerIngreso(@PathVariable("idIngreso") Long idIngreso) {
+        Optional<IngresoDTO> ingresoDTO = ingresoService.findById(idIngreso);
+        if (ingresoDTO.isEmpty()) {
+            return ResponseHandler.generateResponse("Ingreso no encontrada con id: " + idIngreso, HttpStatus.NOT_FOUND, null);
+        }
+
+        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, ingresoDTO.get());
     }
 
-    @PostMapping({"", "/"})
-    public Ingreso agregarIngreso(@RequestBody Ingreso ingreso) {
-        Long ultimoId = ingresos.get(ingresos.size() - 1).getIngresoId();
-        ingreso.setIngresoId(++ultimoId);
-        // TODO: obtener cuentaId del request y obtenerlo para agregarlo
-        ingreso.setCuenta(cuenta);
-        ingresos.add(ingreso);
-        return ingreso;
+    @PostMapping
+    public ResponseEntity<Object> agregarIngreso(@RequestBody IngresoDTO ingresoDTO) {
+        try {
+            IngresoDTO ingreso = ingresoService.save(ingresoDTO);
+            return ResponseHandler.generateResponse("Ingreso agregado correctamente.", HttpStatus.OK, ingreso);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @PutMapping("/{idIngreso}")
-    public Ingreso actualizarIngreso(@RequestBody Ingreso ingresoRequest, @PathVariable("idIngreso") Long idIngreso) {
-        Ingreso ingreso = obtenerIngreso(idIngreso);
-
-        if (ingreso != null) {
-            ingreso.setDescripcion(ingresoRequest.getDescripcion());
-            ingreso.setMonto(ingresoRequest.getMonto());
-            ingreso.setFecha(ingresoRequest.getFecha());
-            ingreso.setCategoria(ingresoRequest.getCategoria());
-            // TODO: obtener cuentaId del request y obtenerlo para agregarlo
-            ingreso.setCuenta(cuenta);
+    public ResponseEntity<Object> actualizarIngreso(@RequestBody IngresoDTO ingresoRequest, @PathVariable("idIngreso") Long idIngreso) {
+        try {
+            ingresoService.update(idIngreso, ingresoRequest);
+            return ResponseHandler.generateResponse("Ingreso actualizado correctamente.", HttpStatus.OK, null);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
-
-        return ingreso;
     }
 
     @DeleteMapping("/{idIngreso}")
-    public Ingreso eliminarIngreso(@PathVariable("idIngreso") Long idIngreso) {
-        Ingreso ingreso = obtenerIngreso(idIngreso);
-
-        if (ingreso != null) {
-            ingresos.remove(ingreso);
+    public ResponseEntity<Object> eliminarIngreso(@PathVariable("idIngreso") Long idIngreso) {
+        try {
+            ingresoService.delete(idIngreso);
+            return ResponseHandler.generateResponse("Ingreso eliminado correctamente.", HttpStatus.OK, null);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
-
-        return ingreso;
     }
 
 }
