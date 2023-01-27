@@ -9,8 +9,8 @@ import java.util.Map;
 @Data
 public class ResponseError {
     private final LocalDateTime timestamp = LocalDateTime.now();
-    private int status;
-    private String error;
+    private String status;
+    private int statusCode;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
     private String message;

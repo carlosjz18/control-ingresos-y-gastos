@@ -66,7 +66,7 @@ public class ManejadorGlobalExcepciones extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String path = request.getDescription(false).substring(4);
-        return ResponseHandler.generateResponseError(null, status, path, "No se encontró el recurso solicitado");
+        return ResponseHandler.generateResponseError(null, status, path, "No se encontró el recurso solicitado: " + path);
     }
 
     // Maneja excepciones ResponseStatusException / HTTP CODE: Multi code
