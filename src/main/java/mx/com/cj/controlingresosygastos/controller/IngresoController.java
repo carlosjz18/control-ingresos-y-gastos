@@ -24,9 +24,9 @@ public class IngresoController {
     public ResponseEntity<Object> obtenerIngresos() {
         try {
             List<IngresoDTO> ingresos = ingresoService.findAll();
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, ingresos);
+            return ResponseHandler.generateResponseSuccess("Successfully retrieved data!", HttpStatus.OK, ingresos);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -34,19 +34,19 @@ public class IngresoController {
     public ResponseEntity<Object> obtenerIngreso(@PathVariable("idIngreso") Long idIngreso) {
         Optional<IngresoDTO> ingresoDTO = ingresoService.findById(idIngreso);
         if (ingresoDTO.isEmpty()) {
-            return ResponseHandler.generateResponse("Ingreso no encontrada con id: " + idIngreso, HttpStatus.NOT_FOUND, null);
+            return ResponseHandler.generateResponseSuccess("Ingreso no encontrada con id: " + idIngreso, HttpStatus.NOT_FOUND, null);
         }
 
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, ingresoDTO.get());
+        return ResponseHandler.generateResponseSuccess("Successfully retrieved data!", HttpStatus.OK, ingresoDTO.get());
     }
 
     @PostMapping
     public ResponseEntity<Object> agregarIngreso(@RequestBody IngresoDTO ingresoDTO) {
         try {
             IngresoDTO ingreso = ingresoService.save(ingresoDTO);
-            return ResponseHandler.generateResponse("Ingreso agregado correctamente.", HttpStatus.OK, ingreso);
+            return ResponseHandler.generateResponseSuccess("Ingreso agregado correctamente.", HttpStatus.OK, ingreso);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -54,9 +54,9 @@ public class IngresoController {
     public ResponseEntity<Object> actualizarIngreso(@RequestBody IngresoDTO ingresoRequest, @PathVariable("idIngreso") Long idIngreso) {
         try {
             ingresoService.update(idIngreso, ingresoRequest);
-            return ResponseHandler.generateResponse("Ingreso actualizado correctamente.", HttpStatus.OK, null);
+            return ResponseHandler.generateResponseSuccess("Ingreso actualizado correctamente.", HttpStatus.OK, null);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -64,9 +64,9 @@ public class IngresoController {
     public ResponseEntity<Object> eliminarIngreso(@PathVariable("idIngreso") Long idIngreso) {
         try {
             ingresoService.delete(idIngreso);
-            return ResponseHandler.generateResponse("Ingreso eliminado correctamente.", HttpStatus.OK, null);
+            return ResponseHandler.generateResponseSuccess("Ingreso eliminado correctamente.", HttpStatus.OK, null);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 

@@ -2,6 +2,7 @@ package mx.com.cj.controlingresosygastos.service.impl;
 
 import mx.com.cj.controlingresosygastos.dto.UsuarioDTO;
 import mx.com.cj.controlingresosygastos.entity.Usuario;
+import mx.com.cj.controlingresosygastos.exception.ResourceNotFoundException;
 import mx.com.cj.controlingresosygastos.mapper.IUsuarioMapper;
 import mx.com.cj.controlingresosygastos.repository.IUsuarioRepository;
 import mx.com.cj.controlingresosygastos.service.IUsuarioService;
@@ -48,7 +49,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public void update(long id, UsuarioDTO usuarioDTO) throws Exception {
         Optional<Usuario> result = usuarioRepository.findById(id);
         if (result.isEmpty()) {
-            throw new Exception("No existe usuario");
+            throw new ResourceNotFoundException("Usuario no encontrado con id: " + id);
         }
 
         Usuario usuario = result.get();
@@ -59,10 +60,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public void delete(long id) throws Exception {
+    public void delete(long id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario.isEmpty()) {
-            throw new Exception("No existe usuario");
+            throw new ResourceNotFoundException("Usuario no encontrado con id: " + id);
         }
         usuarioRepository.deleteById(id);
     }

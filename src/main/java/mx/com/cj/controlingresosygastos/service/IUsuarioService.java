@@ -14,5 +14,5 @@ public interface IUsuarioService {
 
     void update(long id, UsuarioDTO usuarioDTO) throws Exception;
 
-    void delete(long id) throws Exception;
+    void delete(long id);
 }

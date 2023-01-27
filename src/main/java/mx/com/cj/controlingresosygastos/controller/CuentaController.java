@@ -27,9 +27,9 @@ public class CuentaController {
         try {
             List<CuentaDTO> cuentas = cuentaService.findAll();
             log.info("Cuentas encontradas correctamente.");
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, cuentas);
+            return ResponseHandler.generateResponseSuccess("Successfully retrieved data!", HttpStatus.OK, cuentas);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -38,11 +38,11 @@ public class CuentaController {
         Optional<CuentaDTO> cuentaDTO = cuentaService.findById(idCuenta);
         if (cuentaDTO.isEmpty()) {
             log.info("Cuenta no encontrada con id: {}", idCuenta);
-            return ResponseHandler.generateResponse("Cuenta no encontrada con id: " + idCuenta, HttpStatus.NOT_FOUND, null);
+            return ResponseHandler.generateResponseSuccess("Cuenta no encontrada con id: " + idCuenta, HttpStatus.NOT_FOUND, null);
         }
 
         log.info("Cuenta encontrada corectamente, id {}", idCuenta);
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, cuentaDTO.get());
+        return ResponseHandler.generateResponseSuccess("Successfully retrieved data!", HttpStatus.OK, cuentaDTO.get());
     }
 
     @PostMapping
@@ -50,10 +50,10 @@ public class CuentaController {
         try {
             CuentaDTO cuenta = cuentaService.save(cuentaDTO);
             log.info("Cuenta agregada correctamente.");
-            return ResponseHandler.generateResponse("Cuenta agregada correctamente.", HttpStatus.OK, cuenta);
+            return ResponseHandler.generateResponseSuccess("Cuenta agregada correctamente.", HttpStatus.OK, cuenta);
         } catch (Exception e) {
             log.warn("Ocurrio un error: ", e);
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -62,10 +62,10 @@ public class CuentaController {
         try {
             cuentaService.update(idCuenta, cuentaRequest);
             log.info("Cuenta actualizada correctamente.");
-            return ResponseHandler.generateResponse("Cuenta actualizada correctamente.", HttpStatus.OK, null);
+            return ResponseHandler.generateResponseSuccess("Cuenta actualizada correctamente.", HttpStatus.OK, null);
         } catch (Exception e) {
             log.warn("Ocurrio un error: ", e);
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -74,10 +74,10 @@ public class CuentaController {
         try {
             cuentaService.delete(idCuenta);
             log.info("Cuenta eliminada correctamente, id {}", idCuenta);
-            return ResponseHandler.generateResponse("Cuenta eliminada correctamente.", HttpStatus.OK, null);
+            return ResponseHandler.generateResponseSuccess("Cuenta eliminada correctamente.", HttpStatus.OK, null);
         } catch (Exception e) {
             log.warn("Ocurrio un error: ", e);
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 }

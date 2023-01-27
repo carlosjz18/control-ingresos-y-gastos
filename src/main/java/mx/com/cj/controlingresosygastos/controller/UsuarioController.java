@@ -1,14 +1,15 @@
 package mx.com.cj.controlingresosygastos.controller;
 
 import mx.com.cj.controlingresosygastos.dto.UsuarioDTO;
+import mx.com.cj.controlingresosygastos.exception.ResourceNotFoundException;
 import mx.com.cj.controlingresosygastos.response.ResponseHandler;
 import mx.com.cj.controlingresosygastos.service.IUsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -22,51 +23,37 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<Object> obtenerUsuarios() {
-        try {
-            List<UsuarioDTO> usuarios = usuarioService.findAll();
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, usuarios);
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        List<UsuarioDTO> usuarios = usuarioService.findAll();
+
+        if (usuarios.isEmpty()) {
+            return ResponseHandler.generateResponseSuccess("No hay usuarios!", HttpStatus.NO_CONTENT, usuarios);
         }
+
+        return ResponseHandler.generateResponseSuccess("Información recuperada con éxito!", HttpStatus.OK, usuarios);
     }
 
     @GetMapping("/{idUsuario}")
     public ResponseEntity<Object> obtenerUsuario(@PathVariable("idUsuario") Long idUsuario) {
-        Optional<UsuarioDTO> usuarioDTO = usuarioService.findById(idUsuario);
-        if (usuarioDTO.isEmpty()) {
-            return ResponseHandler.generateResponse("Usuario no encontrado con id: " + idUsuario, HttpStatus.NOT_FOUND, null);
-        }
-
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, usuarioDTO.get());
+        UsuarioDTO usuarioDTO = usuarioService.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id:  " + idUsuario));
+        return ResponseHandler.generateResponseSuccess("Información recuperada con éxito!", HttpStatus.OK, usuarioDTO);
     }
 
     @PostMapping
-    public ResponseEntity<Object> agregarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        try {
-            UsuarioDTO usuario = usuarioService.save(usuarioDTO);
-            return ResponseHandler.generateResponse("Usuario agregado correctamente.", HttpStatus.OK, usuario);
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
+    public ResponseEntity<Object> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuario = usuarioService.save(usuarioDTO);
+        return ResponseHandler.generateResponseSuccess("Usuario agregado correctamente.", HttpStatus.OK, usuario);
     }
 
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<Object> actualizarUsuario(@RequestBody UsuarioDTO usuarioRequest, @PathVariable("idUsuario") Long idUsuario) throws Exception {
-        try {
-            usuarioService.update(idUsuario, usuarioRequest);
-            return ResponseHandler.generateResponse("Usuario actualizado correctamente.", HttpStatus.OK, null);
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
+    public ResponseEntity<Object> actualizarUsuario(@Valid @RequestBody UsuarioDTO usuarioRequest, @PathVariable("idUsuario") Long idUsuario) throws Exception {
+        usuarioService.update(idUsuario, usuarioRequest);
+        return ResponseHandler.generateResponseSuccess("Usuario actualizado correctamente.", HttpStatus.OK, null);
     }
 
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<Object> eliminarUsuario(@PathVariable("idUsuario") Long idUsuario) {
-        try {
-            usuarioService.delete(idUsuario);
-            return ResponseHandler.generateResponse("Usuario eliminado correctamente.", HttpStatus.OK, null);
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
+        //throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tiene permiso para visualizar al cliente indicado.");
+        usuarioService.delete(idUsuario);
+        return ResponseHandler.generateResponseSuccess("Usuario eliminado correctamente.", HttpStatus.OK, null);
     }
 }

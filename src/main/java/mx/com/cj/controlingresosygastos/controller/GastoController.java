@@ -24,9 +24,9 @@ public class GastoController {
     public ResponseEntity<Object> obtenerGastos() {
         try {
             List<GastoDTO> gastos = gastoService.findAll();
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, gastos);
+            return ResponseHandler.generateResponseSuccess("Successfully retrieved data!", HttpStatus.OK, gastos);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -34,19 +34,19 @@ public class GastoController {
     public ResponseEntity<Object> obtenerGasto(@PathVariable("idGasto") Long idGasto) {
         Optional<GastoDTO> gastoDTO = gastoService.findById(idGasto);
         if (gastoDTO.isEmpty()) {
-            return ResponseHandler.generateResponse("Gasto no encontrada con id: " + idGasto, HttpStatus.NOT_FOUND, null);
+            return ResponseHandler.generateResponseSuccess("Gasto no encontrada con id: " + idGasto, HttpStatus.NOT_FOUND, null);
         }
 
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, gastoDTO.get());
+        return ResponseHandler.generateResponseSuccess("Successfully retrieved data!", HttpStatus.OK, gastoDTO.get());
     }
 
     @PostMapping
     public ResponseEntity<Object> agregarGasto(@RequestBody GastoDTO gastoDTO) {
         try {
             GastoDTO gasto = gastoService.save(gastoDTO);
-            return ResponseHandler.generateResponse("Gasto agregado correctamente.", HttpStatus.OK, gasto);
+            return ResponseHandler.generateResponseSuccess("Gasto agregado correctamente.", HttpStatus.OK, gasto);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -54,9 +54,9 @@ public class GastoController {
     public ResponseEntity<Object> actualizarGasto(@RequestBody GastoDTO gastoRequest, @PathVariable("idGasto") Long idGasto) {
         try {
             gastoService.update(idGasto, gastoRequest);
-            return ResponseHandler.generateResponse("Gasto actualizado correctamente.", HttpStatus.OK, null);
+            return ResponseHandler.generateResponseSuccess("Gasto actualizado correctamente.", HttpStatus.OK, null);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
@@ -64,9 +64,9 @@ public class GastoController {
     public ResponseEntity<Object> eliminarGasto(@PathVariable("idGasto") Long idGasto) {
         try {
             gastoService.delete(idGasto);
-            return ResponseHandler.generateResponse("Gasto eliminado correctamente.", HttpStatus.OK, null);
+            return ResponseHandler.generateResponseSuccess("Gasto eliminado correctamente.", HttpStatus.OK, null);
         } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+            return ResponseHandler.generateResponseSuccess(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
 
