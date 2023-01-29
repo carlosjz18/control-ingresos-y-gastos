@@ -58,8 +58,8 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
         Usuario usuario = result.get();
         usuario.setNombre(usuarioDTO.getNombre());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setPassword(usuarioDTO.getPassword());
+        usuario.setCorreo(usuarioDTO.getCorreo());
+        usuario.setContrasena(usuarioDTO.getContrasena());
         usuario.setRol(usuarioDTO.getRol());
         usuarioRepository.save(usuario);
     }
