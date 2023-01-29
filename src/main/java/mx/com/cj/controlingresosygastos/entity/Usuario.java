@@ -21,11 +21,11 @@ public class Usuario {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "correo", nullable = false)
-    private String correo;
+    @Column(name = "email", nullable = false)
+    private String email;
 
-    @Column(name = "contrasena", nullable = false)
-    private String contrasena;
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "rol", nullable = false)
     private String rol;

@@ -10,6 +10,7 @@ import mx.com.cj.controlingresosygastos.repository.IGastoRepository;
 import mx.com.cj.controlingresosygastos.repository.IIngresoRepository;
 import mx.com.cj.controlingresosygastos.repository.IUsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -38,7 +39,7 @@ public class Runner implements CommandLineRunner {
         log.info("--- Insert Usuarios ---");
         usuarioRepository.deleteAll();
         List<Usuario> usuarios = List.of(
-                new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123", "ADMIN"),
+                new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", new BCryptPasswordEncoder().encode("123"), "ADMIN"),
                 new Usuario(2L, "Pepe Juárez", "pepe@gmail.com", "2322sdds", "ADMIN"),
                 new Usuario(3L, "Ana López", "ana@gmail.com", "abc123", "ADMIN")
         );

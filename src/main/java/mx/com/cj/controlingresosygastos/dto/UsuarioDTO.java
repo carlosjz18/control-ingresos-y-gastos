@@ -17,11 +17,11 @@ public class UsuarioDTO {
 
     @Email
     @NotBlank(message = "El correo no puede estar vacío")
-    private String correo;
+    private String email;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
-    private String contrasena;
+    private String password;
 
     @NotBlank(message = "El rol no puede estar vacío")
     private String rol;
