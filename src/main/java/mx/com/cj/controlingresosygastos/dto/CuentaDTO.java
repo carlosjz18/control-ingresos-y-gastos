@@ -1,8 +1,7 @@
 package mx.com.cj.controlingresosygastos.dto;
 
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
-
-import javax.validation.constraints.PositiveOrZero;
 
 @Data
 public class CuentaDTO {

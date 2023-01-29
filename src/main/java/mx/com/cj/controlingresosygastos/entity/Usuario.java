@@ -1,8 +1,7 @@
 package mx.com.cj.controlingresosygastos.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -27,4 +26,7 @@ public class Usuario {
 
     @Column(name = "contrasena", nullable = false)
     private String contrasena;
+
+    @Column(name = "rol", nullable = false)
+    private String rol;
 }

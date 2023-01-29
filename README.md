@@ -4,6 +4,38 @@ Sistema de Control de Ingresos y Gastos, para la administración financiera de u
 
 BEDU: Developer Engineering
 
+
+MySQL container
+
+- nombre: MYSQL_IP
+- valor: 172.17.0.2 / 172.17.0.3
+---
+- nombre: MYSQL_PASSWORD
+- valor: abcD_1234
+---
+- nombre: MYSQL_USER
+- valor: root
+---
+
+- Conectarse a la BD MySQL desde terminal de container
+> mysql -h localhost -u root -p
+
+- Crear base de datos
+> mysql> create database control_ingresos_gastos;
+
+- Ver bases de datos
+> mysql> show databases;
+
+- Usar BD
+> mysql> use control_ingresos_gastos;
+
+- Mostrar tablas de la BD
+> mysql> show tables;
+
+
+- Mostrar datos de la tabla usuarios
+> mysql> select * from usuarios;
+
 ## Construido con 🛠️
 
 * [Java]() Lenguaje utilizado

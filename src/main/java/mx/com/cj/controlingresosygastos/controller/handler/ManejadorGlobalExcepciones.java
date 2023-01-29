@@ -4,6 +4,7 @@ import mx.com.cj.controlingresosygastos.exception.ResourceNotFoundException;
 import mx.com.cj.controlingresosygastos.response.ResponseHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -25,7 +26,7 @@ public class ManejadorGlobalExcepciones extends ResponseEntityExceptionHandler {
 
     // Maneja excepciones validaciones Spring MVC Validation / HTTP CODE: 400
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         String message = "Los campos no cumplen la validación";
 
@@ -41,12 +42,12 @@ public class ManejadorGlobalExcepciones extends ResponseEntityExceptionHandler {
 
         String path = request.getDescription(false).substring(4);
 
-        return ResponseHandler.generateResponseError(errors, status, path, message);
+        return ResponseHandler.generateResponseError(errors, (HttpStatus) status, path, message);
     }
 
     // Maneja excepciones del tipo de método soportado por el endpoint solicitado GET/POST/PUT/DELETE / HTTP CODE: 405
     @Override
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         StringBuilder builder = new StringBuilder();
         builder.append("El método ");
@@ -59,14 +60,14 @@ public class ManejadorGlobalExcepciones extends ResponseEntityExceptionHandler {
 
         String path = request.getDescription(false).substring(4);
 
-        return ResponseHandler.generateResponseError(null, status, path, message);
+        return ResponseHandler.generateResponseError(null, (HttpStatus) status, path, message);
     }
 
     // Maneja recursos no encontrados / HTTP CODE: 404
     @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String path = request.getDescription(false).substring(4);
-        return ResponseHandler.generateResponseError(null, status, path, "No se encontró el recurso solicitado: " + path);
+        return ResponseHandler.generateResponseError(null, (HttpStatus) status, path, "No se encontró el recurso solicitado: " + path);
     }
 
     // Maneja excepciones ResponseStatusException / HTTP CODE: Multi code
@@ -74,7 +75,7 @@ public class ManejadorGlobalExcepciones extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> hadleResponseStatus(ResponseStatusException ex, WebRequest request) {
         String message = ex.getReason();
         String path = request.getDescription(false).substring(4);
-        return ResponseHandler.generateResponseError(null, ex.getStatus(), path, message);
+        return ResponseHandler.generateResponseError(null, (HttpStatus) ex.getStatusCode(), path, message);
     }
 
     // Maneja todas las demás excepciones que puedan ocurrir / HTTP CODE: 500

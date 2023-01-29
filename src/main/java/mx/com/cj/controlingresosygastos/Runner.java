@@ -38,9 +38,9 @@ public class Runner implements CommandLineRunner {
         log.info("--- Insert Usuarios ---");
         usuarioRepository.deleteAll();
         List<Usuario> usuarios = List.of(
-                new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123"),
-                new Usuario(2L, "Pepe Juárez", "pepe@gmail.com", "2322sdds"),
-                new Usuario(3L, "Ana López", "ana@gmail.com", "abc123")
+                new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123", "ADMIN"),
+                new Usuario(2L, "Pepe Juárez", "pepe@gmail.com", "2322sdds", "ADMIN"),
+                new Usuario(3L, "Ana López", "ana@gmail.com", "abc123", "ADMIN")
         );
         usuarioRepository.saveAll(usuarios);
         /*usuarioRepository.findAll().forEach((user) -> {
@@ -49,7 +49,7 @@ public class Runner implements CommandLineRunner {
 
         log.info("--- Insert Cuentas ---");
         cuentaRepository.deleteAll();
-        Usuario usuario = new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123");
+        Usuario usuario = new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123", "ADMIN");
         List<Cuenta> cuentas = List.of(
                 new Cuenta(1L, "Cuenta Corriente", "HSBC", 100.00, 100.00, usuario),
                 new Cuenta(2L, "Ahorros", "BBVA", 1000.00, 1000.00, usuario),

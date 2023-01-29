@@ -1,12 +1,10 @@
 package mx.com.cj.controlingresosygastos.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.persistence.Column;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
 
 @Data
 public class UsuarioDTO {
@@ -21,8 +19,10 @@ public class UsuarioDTO {
     @NotBlank(message = "El correo no puede estar vacío")
     private String correo;
 
-    @Column(name = "contrasena", nullable = false)
     @NotBlank(message = "La contraseña no puede estar vacía")
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
     private String contrasena;
+
+    @NotBlank(message = "El rol no puede estar vacío")
+    private String rol;
 }
