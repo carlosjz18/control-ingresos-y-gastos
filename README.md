@@ -36,6 +36,11 @@ MySQL container
 - Mostrar datos de la tabla usuarios
 > mysql> select * from usuarios;
 
+- Imagen y Container Docker para la aplicación (Dockerfile)
+> docker image build -t my-app-java:latest .
+
+> docker container run -p 8080:8080 -d --name container-app-jar my-app-java
+
 ## Construido con 🛠️
 
 * [Java]() Lenguaje utilizado
