@@ -14,7 +14,7 @@
     <name>control-ingresos-y-gastos</name>
     <description>control-ingresos-y-gastos</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>

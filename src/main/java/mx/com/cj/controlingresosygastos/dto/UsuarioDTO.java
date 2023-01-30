@@ -15,7 +15,7 @@ public class UsuarioDTO {
     @Size(min = 5, max = 45, message = "El nombre del usuario debe tener al menos 5 letras y ser menor a 45")
     private String nombre;
 
-    @Email
+    @Email(message = "El correo debe ser valido")
     @NotBlank(message = "El correo no puede estar vacío")
     private String correo;
 
