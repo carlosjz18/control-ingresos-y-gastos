@@ -26,10 +26,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public List<UsuarioDTO> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        usuarios.forEach(System.out::println);
-        System.out.println("-------------------------------");
-        List<UsuarioDTO> usuarioDTOS = usuarios.stream().map(usuarioMapper::toDTO).collect(Collectors.toList());
-        usuarioDTOS.forEach(System.out::println);
         return usuarios.stream().map(usuarioMapper::toDTO).collect(Collectors.toList());
     }
 
