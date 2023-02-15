@@ -2,9 +2,6 @@ package mx.com.cj.controlingresosygastos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class ControlIngresosYGastosApplication {
@@ -13,14 +10,23 @@ public class ControlIngresosYGastosApplication {
         SpringApplication.run(ControlIngresosYGastosApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedHeaders("*")
+                        .allowedMethods("*")
+                        .allowCredentials(true);
             }
         };
-    }
+    }*/
+
+    /*registry.addMapping("/**")
+                        .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD")
+                        .allowedOrigins("http://localhost:4200");*/
 
 }

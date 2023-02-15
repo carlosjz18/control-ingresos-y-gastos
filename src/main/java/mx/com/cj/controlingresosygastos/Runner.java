@@ -52,15 +52,15 @@ public class Runner implements CommandLineRunner {
         cuentaRepository.deleteAll();
         Usuario usuario = new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", "123", "ADMIN");
         List<Cuenta> cuentas = List.of(
-                new Cuenta(1L, "Cuenta Corriente", "HSBC", 100.00, 100.00, usuario),
-                new Cuenta(2L, "Ahorros", "BBVA", 1000.00, 1000.00, usuario),
-                new Cuenta(3L, "Dinero", "Otros", 1800.00, 1800.00, usuario)
+                new Cuenta(1L, "HSBC", "Cuenta Corriente", 100.00, 100.00, usuario),
+                new Cuenta(2L, "BBVA", "Ahorros", 1000.00, 1000.00, usuario),
+                new Cuenta(3L, "Otros", "Dinero Efectivo", 1800.00, 1800.00, usuario)
         );
         cuentaRepository.saveAll(cuentas);
 
         log.info("--- Insert Ingresos ---");
         ingresoRepository.deleteAll();
-        Cuenta cuenta = new Cuenta(1L, "Cuenta Corriente", "HSBC", 100.00, 100.00, usuario);
+        Cuenta cuenta = new Cuenta(1L, "HSBC", "Cuenta Corriente", 100.00, 100.00, usuario);
         List<Ingreso> ingresos = List.of(
                 new Ingreso(1L, "Pago nómina", 2300.00, LocalDate.now(), "Sueldo", cuenta),
                 new Ingreso(2L, "Deuda Mario", 500.00, LocalDate.now(), "Otros", cuenta),
