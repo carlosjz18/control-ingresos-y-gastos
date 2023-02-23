@@ -7,6 +7,7 @@ import mx.com.cj.controlingresosygastos.response.ResponseHandler;
 import mx.com.cj.controlingresosygastos.service.IUsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<Object> obtenerUsuarios() {
         List<UsuarioDTO> usuarios = usuarioService.findAll();

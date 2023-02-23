@@ -6,11 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,14 +24,16 @@ import java.util.List;
 
 @Configuration
 @AllArgsConstructor
+@EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JWTAuthorizationFilter jwtAuthorizationFilter;
+    private final AuthenticationEntryPoint authEntryPoint;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http,
-                                    AuthenticationManager authManager) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
 
         JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(authManager);
@@ -37,11 +42,14 @@ public class WebSecurityConfig {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf().disable()
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -57,7 +65,7 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.setExposedHeaders(   List.of("Authorization"));
+        config.setExposedHeaders(List.of("Authorization"));
         config.addAllowedOrigin("http://localhost:4200");
         source.registerCorsConfiguration("/**", config);
         return source;

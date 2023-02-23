@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -78,19 +80,35 @@ public class ManejadorGlobalExcepciones extends ResponseEntityExceptionHandler {
         return ResponseHandler.generateResponseError(null, (HttpStatus) ex.getStatusCode(), path, message);
     }
 
-    // Maneja todas las demás excepciones que puedan ocurrir / HTTP CODE: 500
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGlobal(Exception ex, WebRequest request) {
-        String message = ex.getMessage();
-        String path = request.getDescription(false).substring(4);
-        return ResponseHandler.generateResponseError(null, HttpStatus.INTERNAL_SERVER_ERROR, path, message);
-    }
-
     // Maneja excepciones datos no encontrados BD / HTTP CODE: 404
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         String message = ex.getMessage();
         String path = request.getDescription(false).substring(4);
         return ResponseHandler.generateResponseError(null, HttpStatus.NOT_FOUND, path, message);
+    }
+
+    // Maneja excepciones AuthenticationException, cuando no se inicia sesión con las credenciales correctas / HTTP CODE: 401
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Object> handleGlobal(AuthenticationException ex, WebRequest request) {
+        String message = ex.getMessage();
+        String path = request.getDescription(false).substring(4);
+        return ResponseHandler.generateResponseError(null, HttpStatus.UNAUTHORIZED, path, message);
+    }
+
+    // Maneja excepciones AccessDeniedException, cuando se intenta acceder a un endpoint sin el rol correspondiente / HTTP CODE: 401
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleGlobal(AccessDeniedException ex, WebRequest request) {
+        String message = ex.getMessage();
+        String path = request.getDescription(false).substring(4);
+        return ResponseHandler.generateResponseError(null, HttpStatus.UNAUTHORIZED, path, message);
+    }
+
+    // Maneja todas las demás excepciones que puedan ocurrir / HTTP CODE: 500
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGlobal(Exception ex, WebRequest request) {
+        String message = ex.getMessage();
+        String path = request.getDescription(false).substring(4);
+        return ResponseHandler.generateResponseError(null, HttpStatus.INTERNAL_SERVER_ERROR, path, message);
     }
 }

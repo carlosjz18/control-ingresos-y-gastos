@@ -5,11 +5,9 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TokenUtils {
     private final static String ACCESS_TOKEN_SECRET = "supersecretdeddddeeefeeeewe#4433sdejjjjjj";
@@ -21,7 +19,7 @@ public class TokenUtils {
 
         Map<String, Object> extra = new HashMap<>();
         extra.put("nombre", nombre);
-        extra.put("rol", rol);
+        extra.put("rol", "ROLE_" + rol);
 
         return Jwts.builder()
                 .setSubject(email)
@@ -40,7 +38,11 @@ public class TokenUtils {
                     .getBody();
 
             String email = claims.getSubject();
-            return new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+            Collection<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("rol").toString().split(","))
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
+
+            return new UsernamePasswordAuthenticationToken(email, null, authorities);
         } catch (JwtException exception) {
             return null;
         }
