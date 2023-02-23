@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ingresos")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class IngresoController {
 
     private IIngresoService ingresoService;
@@ -21,7 +22,6 @@ public class IngresoController {
         this.ingresoService = ingresoService;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public ResponseEntity<Object> obtenerIngresos() {
         try {

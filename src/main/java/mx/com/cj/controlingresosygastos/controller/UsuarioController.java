@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UsuarioController {
 
     private IUsuarioService usuarioService;
@@ -22,7 +23,6 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<Object> obtenerUsuarios() {
         List<UsuarioDTO> usuarios = usuarioService.findAll();

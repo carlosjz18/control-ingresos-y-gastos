@@ -38,9 +38,9 @@ public class TokenUtils {
                     .getBody();
 
             String email = claims.getSubject();
+
             Collection<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("rol").toString().split(","))
-                    .map(SimpleGrantedAuthority::new)
-                    .toList();
+                    .map(SimpleGrantedAuthority::new).toList();
 
             return new UsernamePasswordAuthenticationToken(email, null, authorities);
         } catch (JwtException exception) {
