@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.*;
 
 public class TokenUtils {
-    private final static String ACCESS_TOKEN_SECRET = "supersecretdeddddeeefeeeewe#4433sdejjjjjj";
+    private final static String ACCESS_TOKEN_SECRET = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
     private final static Long ACCESS_TOKEN_VALIDITY_SECONDS = 2_592_000L;
 
     public static String createToken(String nombre, String email, String rol) {
