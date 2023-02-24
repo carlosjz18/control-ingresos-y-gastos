@@ -40,7 +40,7 @@ public class Runner implements CommandLineRunner {
         usuarioRepository.deleteAll();
         List<Usuario> usuarios = List.of(
                 new Usuario(1L, "Carlos Jaimez", "carlos@gmail.com", new BCryptPasswordEncoder().encode("123"), "ADMIN"),
-                new Usuario(2L, "Pepe Juárez", "pepe@gmail.com", new BCryptPasswordEncoder().encode("123"), "USER"),
+                new Usuario(2L, "Pedro Juárez", "pepe@gmail.com", new BCryptPasswordEncoder().encode("123"), "USER"),
                 new Usuario(3L, "Ana López", "ana@gmail.com", new BCryptPasswordEncoder().encode("123"), "USER")
         );
         usuarioRepository.saveAll(usuarios);
