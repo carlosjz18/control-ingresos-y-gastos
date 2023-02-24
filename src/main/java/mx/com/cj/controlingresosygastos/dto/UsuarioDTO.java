@@ -1,5 +1,6 @@
 package mx.com.cj.controlingresosygastos.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -21,8 +22,13 @@ public class UsuarioDTO {
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String contrasena;
 
     @NotBlank(message = "El rol no puede estar vacío")
     private String rol;
+
+    public String getContrasena() {
+        return null;
+    }
 }
