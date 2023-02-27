@@ -103,6 +103,7 @@ public class ResponseError {
 * Respuesta éxitosa.  
 <br/>
 * GET Usuarios
+
 ```
 {
     "timestamp": "2023-02-23T21:44:46.3495584",
@@ -135,6 +136,7 @@ public class ResponseError {
 }
 ```
 * GET Usuario por Id
+
 ```
 {
     "timestamp": "2023-02-23T21:51:57.6762281",
@@ -151,6 +153,7 @@ public class ResponseError {
 }
 ```
 * POST Usuario
+
 ```
 {
     "timestamp": "2023-02-23T21:37:14.4704776",
@@ -167,6 +170,7 @@ public class ResponseError {
 }
 ```
 * PUT Usuario
+
 ```
 {
     "timestamp": "2023-02-23T21:55:02.7449624",
@@ -176,6 +180,7 @@ public class ResponseError {
 }
 ```
 * DELETE Usuario
+
 ```
 {
     "timestamp": "2023-02-23T21:40:15.5529935",
