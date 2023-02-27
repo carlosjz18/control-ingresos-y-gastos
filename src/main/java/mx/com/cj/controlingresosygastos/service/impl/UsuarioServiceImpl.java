@@ -6,6 +6,7 @@ import mx.com.cj.controlingresosygastos.exception.ResourceNotFoundException;
 import mx.com.cj.controlingresosygastos.mapper.IUsuarioMapper;
 import mx.com.cj.controlingresosygastos.repository.IUsuarioRepository;
 import mx.com.cj.controlingresosygastos.service.IUsuarioService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public UsuarioDTO save(UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+        usuario.setContrasena(new BCryptPasswordEncoder().encode(usuario.getContrasena()));
         return usuarioMapper.toDTO(usuarioRepository.save(usuario));
     }
 
@@ -55,7 +57,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         Usuario usuario = result.get();
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setCorreo(usuarioDTO.getCorreo());
-        usuario.setContrasena(usuarioDTO.getContrasena());
+        usuario.setContrasena(new BCryptPasswordEncoder().encode(usuarioDTO.getContrasena()));
         usuario.setRol(usuarioDTO.getRol());
         usuarioRepository.save(usuario);
     }

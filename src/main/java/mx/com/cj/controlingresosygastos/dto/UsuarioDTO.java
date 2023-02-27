@@ -28,7 +28,7 @@ public class UsuarioDTO {
     @NotBlank(message = "El rol no puede estar vacío")
     private String rol;
 
-    public String getContrasena() {
+    /*public String getContrasena() {
         return null;
-    }
+    }*/
 }
