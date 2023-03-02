@@ -1,0 +1,27 @@
+1. Crear red docker
+> docker network create mired
+
+2. Crear container mysql
+> docker run -p3306:3306 -d --name mysqlcj --network mired -e MYSQL_ROOT_PASSWORD=abcD_1234 mysql:8
+
+3. mvn clean install
+
+4. docker image build -t my-app-java:latest .
+
+5. docker run -p 8080:8080 -d --name container-app-jar --network mired my-app-java
+
+-----------------------------------------------
+
+docker inspect 7a077e6aa0a44388ce0b9615b99f28021dfaa5f75911db28cc59b10c1642c711 --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+docker inspect 7997d03af6aa5bbbfe51031e2e665207e0d98707784af504033f14b18eeb93de
+
+-----------------------------------------------
+
+- Crear red y ligarla con contenedores
+docker network create --driver bridge isolated
+docker network connect isolated mysqlcj
+docker network connect isolated container-app-jar
+
+-----------------------------------------------
+- Saltar las pruebas
+mvn clean install -DskipTests
