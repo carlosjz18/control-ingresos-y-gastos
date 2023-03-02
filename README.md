@@ -8,7 +8,7 @@ Aplicación web donde los usuarios podrán realizar el registro de sus ingresos 
 * Poder clasificar por categorías los ingresos y gastos realizados.
 * Poder registrar cuentas.
 
-**Solución Tecnologica**
+**Solución Tecnológica**
 
 * **Fronted:** 
 Angular (Modules, Lazy Load, Guards, Interceptors, Services, Routes/Routes Childs, Reactive Forms, Interfaces, PrimeNg, LocalStorage, Chart.js)
@@ -119,7 +119,7 @@ public class ResponseError {
 
 ### Ok
 * `HTTP CODE: 200`
-* Respuesta éxitosa.  
+* Respuesta exitosa.  
 <br/>
 * GET Usuarios
 
@@ -217,7 +217,7 @@ public class ResponseError {
 
 ### MethodArgumentNotValidException
 * `HTTP CODE: 400`
-* Error reponse para excepciones de validaciones Spring MVC Validation.
+* Error response para excepciones de validaciones Spring MVC Validation.
 ```
 {
     "timestamp": "2023-02-22T22:47:50.8787905",
@@ -236,7 +236,7 @@ public class ResponseError {
 
 ### HttpRequestMethodNotSupportedException
 * `HTTP CODE: 405`
-* Error reponse cuando el método no es soportado por el endpoint GET/POST/PUT/DELETE.
+* Error response cuando el método no es soportado por el endpoint GET/POST/PUT/DELETE.
 ```
 {
     "timestamp": "2023-02-22T22:51:16.317774",
@@ -249,7 +249,7 @@ public class ResponseError {
 
 ### NoHandlerFoundException
 * `HTTP CODE: 404`
-* Error reponse para recursos no encontrados.
+* Error response para recursos no encontrados.
 ```
 {
     "timestamp": "2023-02-22T22:52:50.2975251",
@@ -262,7 +262,7 @@ public class ResponseError {
 
 ### ResourceNotFoundException (Custom Exception)
 * `HTTP CODE: 404`
-* Error reponse para excepciones cuando información no es encontrada en BD.
+* Error response para excepciones cuando información no es encontrada en BD.
 ```
 {
     "timestamp": "2023-02-22T22:54:53.1108177",
@@ -275,7 +275,7 @@ public class ResponseError {
 
 ### AuthenticationException
 * `HTTP CODE: 401`
-* Error reponse para AuthenticationException, cuando se intenta iniciar sesión con las credenciales incorrectas.
+* Error response para AuthenticationException, cuando se intenta iniciar sesión con las credenciales incorrectas.
 ```
 {
     "timestamp": "2023-02-22T22:16:36.3223809",
@@ -288,7 +288,7 @@ public class ResponseError {
 
 ### AccessDeniedException
 * `HTTP CODE: 401`
-* Error reponse para AccessDeniedException, cuando se intenta acceder a un endpoint sin el rol correspondiente.
+* Error response para AccessDeniedException, cuando se intenta acceder a un endpoint sin el rol correspondiente.
 ```
 {
     "timestamp": "2023-02-22T22:38:23.841598",
@@ -301,7 +301,7 @@ public class ResponseError {
 
 ### Exception
 * `HTTP CODE: 500`
-* Error reponse para el manejo del resto de las excepciones que pudieran ocurrir.
+* Error response para el manejo del resto de las excepciones que pudieran ocurrir.
 ```
 {
     "timestamp": "2023-02-22T23:04:30.0169205",
