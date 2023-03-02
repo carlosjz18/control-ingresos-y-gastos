@@ -1,4 +1,4 @@
-# Sistema de Control Ingresos y Gastos 💵
+# Sistema de Control Ingresos y Gastos (Backend) 💵
 
 Aplicación web donde los usuarios podrán realizar el registro de sus ingresos y gastos como apoyo a su administración financiera personal.
 
