@@ -225,7 +225,7 @@ public class ResponseError {
     "statusCode": 400,
     "errors": {
         "contrasena": "La contraseña no puede estar vacía",
-        "correo": "El correo debe ser valido",
+        "correo": "El correo debe ser válido",
         "nombre": "El nombre del usuario debe tener al menos 5 letras y ser menor a 45",
         "rol": "El rol no puede estar vacío"
     },
